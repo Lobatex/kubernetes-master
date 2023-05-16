@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: cart-status-virtual-service
+spec:
+  hosts:
+    - ms-cart-status-hml.portalcredsystem.com.br
+  gateways:
+    - istio-system/mendix-app-gateway
+  http:
+    - route:
+        - destination:
+            host: <NOME_DO_SERVICO>
+            port:
+              number: <NUMERO_DA_PORTA_DO_SERVICO>
