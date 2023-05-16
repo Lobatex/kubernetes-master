@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-admins-config
+data:
+  admins.yaml: |
+    credentials:
+      - username: arq_credsystem
+        password: arq2023@
+

@@ -47,9 +47,18 @@ spec:
       serviceAccountName: jenkins
       containers:
         - name: jenkins
+          volumeMounts:
+            # ...
+            - name: admin-config
+              mountPath: /var/jenkins_home/casc_configs/admins
+              readOnly: true
           image: jenkins/jenkins:lts
           ports:
             - containerPort: 8080
               name: web
             - containerPort: 50000
               name: slave
+    volumes:
+      - name: admin-config
+        configMap:
+          name: jenkins-admins-config
