@@ -33,7 +33,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jenkins
-  namespace: delivery
 spec:
   replicas: 1
   selector:
@@ -44,21 +43,23 @@ spec:
       labels:
         app: jenkins
     spec:
-      serviceAccountName: jenkins
       containers:
         - name: jenkins
-          volumeMounts:
-            # ...
-            - name: admin-config
-              mountPath: /var/jenkins_home/casc_configs/admins
-              readOnly: true
           image: jenkins/jenkins:lts
           ports:
             - containerPort: 8080
-              name: web
+              name: http
             - containerPort: 50000
-              name: slave
-    volumes:
-      - name: admin-config
-        configMap:
-          name: jenkins-admins-config
+              name: jnlp
+          volumeMounts:
+            - name: jenkins-home
+              mountPath: /var/jenkins_home
+            - name: admins-config
+              mountPath: /var/jenkins_home/casc_configs/admins
+              readOnly: true
+      volumes:
+        - name: jenkins-home
+          emptyDir: {}
+        - name: admins-config
+          configMap:
+            name: jenkins-admins-config
